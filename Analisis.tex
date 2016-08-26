@@ -9,7 +9,30 @@ El eluyente debe de colocarse un tiempo antes de iniciar el experimento, por lo 
 Una vez colocadas las placas, las mismas se desarrollan durante un tiempo prefijado o bien cuando alcanza una l\'inea dibujada a una distancia fija del or\'igen, distancia com\'un a todas las muestras para estandarizar el valor RF (la distancia recorrida por el solvente). Las placas se pueden secar r\'apidamente con corrientes de aire caliente.
 La mejor posici\'on de desarrollo para el componente es el punto medio entre el or\'igen y el frente del eluyente, ya que permite separar las impurezas que se desplazan con mayor y menor velocidad. El frente del eluyente nunca deber\'ia tocar el borde de la placa.
 
-\section{Creaci\'on de un nuevo proyecto}
+\section{Asistente de Proceso}
+Uno de los objetivos a desarrollar es el dise\~no e implementaci\'on de un asistente de proceso o \textit{Wizard} para el an\'alisis de muestras que facilite todo el proceso de an\'alisis brindando al usuario estimaciones o aproximaciones de las entradas necesarias en cada etapa y que permita al usuario a trav\'es de una simple interacci\'on cargar los datos necesarios de manera practica y amigable. Para logar este objetivo se definieron las siguientes funcionalidades básicas:
+\begin{itemize}
+	\renewcommand{\labelitemi}{$\bullet$}
+	\renewcommand{\labelitemii}{$\circ$}
+	\item \textit{Creaci\'on de un nuevo proyecto}
+	\begin{itemize}
+		\item \textit{Formulario inicial}
+		\item \textit{Carga de la im\'agen}
+		\item \textit{Corte de la im\'agen}
+		\item \textit{Rotaci\'on de la im\'agen}
+		\item \textit{Selecci\'on de muestras}
+		\item \textit{Selecci\'on de puntos especiales}
+		\item \textit{An\'alisis de muestras}
+		\item \textit{Resultados de an\'alisis}
+		\item \textit{Reportes}
+	\end{itemize}
+	\item \textit{Almacenar proyectos}
+	\item \textit{Exploraci\'on de proyectos}
+	\item \textit{Exportaci\'on de datos}
+\end{itemize}
+A continuaci\'on se explicaran brevemente los detalles de cada funcionalidad y las acciones que cada una y por \'utlimo se detallaran las diferentes b\'usquedas de datos y valores realizadas sobre las diferentes muestras, detallando los procesos aplicados a las im\'agenes.
+
+\subsection{Creaci\'on de un nuevo proyecto}
 \begin{itemize}
 	\renewcommand{\labelitemi}{$\bullet$}
 	\renewcommand{\labelitemii}{$\circ$}
@@ -24,14 +47,18 @@ La mejor posici\'on de desarrollo para el componente es el punto medio entre el 
 	\item \textit{Resultados de an\'alisis:} esta etapa procesa cada muestra y por cada una se analizan los picos seleccionados. Los picos por muestra se enumeran y se detalla en pantalla la informaci\'on obtenida: nombre del pico, l\'imites, altura, superficie, superficie relativa y l\'inea base. Se destaca adem\'as que en cada etapa descripta se le permite al usuario a\~nadir comentarios por cada muestra seleccionada.
 	\item \textit{Reportes:} se realiza una recopilaci\'on de la informaci\'on obtenida en las etapas anteriores, acerca de la im\'agen original y sobre la que se trabajo, del mismo modo se muestra sobre cada muestra por separado y el an\'alisis respectivo llevado a cabo, junto con los comentarios y la informaci\'on recolectada.
 \end{itemize}
-\section{Exploraci\'on de proyectos}
+
+\subsection{Almacenar Proyectos}
+TODO
+
+\subsection{Exploraci\'on de proyectos}
 El software permite la exploraci\'on de proyectos dentro del directorio configurado para buscar proyectos previamente guardados. Una vez seleccionada la opci\'on se muestra una galer\'ia de im\'agenes con informaci\'on debajo de cada una que corresponde a nombre y descripci\'on del proyecto guardado, mientras que la im\'agen es la misma que subi\'o originalmente el usuario para analizar.
 
-\section{Exportaci\'on de datos}
+\subsection{Exportaci\'on de datos}
 En el proceso que se lleva a cabo en el software se permite exportar informaci\'on, por ejemplo las im\'agenes originales a tratar y las procesadas por el sistema (debido al asistente y la previa aprobaci\'on del usuario), la informaci\'on sobre la media muestral y los datos en crudo, permitiendo discriminar los datos en muestras individuales. Del mismo modo, llegando al final del proceso se le permite exportar el an\'alisis completo en diferentes formatos como csv, pdf, odt o html.
 
-\section{Procesos destacados}
-En esta secci\'on se har\'a una breve descripci\'on sobre los procesos destacados del proyecto, sobre todo se har\'a \'enfasis en la asistencia que provee el software al usuario, las b\'usquedas autom\'aticas y los resultados calculados.
+\subsection{Procesos destacados}
+En esta secci\'on se har\'a una breve descripci\'on sobre los procesos destacados del proyecto, sobre todo se har\'a \'enfasis en la asistencia que provee el software al usuario, las b\'usquedas autom\'aticas y los resultados calculados.\\
 A fines de facilitar la compresi\'on del proceso se aclarar\'an ciertos procesos que ser\'an frecuentemente nombrados.
 \begin{itemize}
 	\renewcommand{\labelitemi}{$\bullet$}
@@ -44,10 +71,107 @@ A fines de facilitar la compresi\'on del proceso se aclarar\'an ciertos procesos
 	\item \textit{C\'alculo de la media:} la im\'agen queda codificada en colores y se calcula un promedio de valores en base a si se necesita por orientaci\'on horizontal o vertical.
 \end{itemize}
 
-\subsection{B\'usqueda de puntos de corte}
+Los siguientes ejemplos de b\'usquedas fueron sido realizados \'utilizando la siguiente imagen (fig. \ref{fig:image-font}):
+
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/fuente}
+	\centering
+	\vspace{-0.4cm}
+	\caption{Im\'agen fuente.}
+	\label{fig:image-font}
+	\vspace{-0.15cm}
+\end{figure}
+
+\subsubsection{B\'usqueda de puntos de corte}
 Como proceso previo se aplican los efectos de im\'agen en el siguiente orden: blur gaussiano, escala de grises, inversi\'on de colores y treshold. Se realiza un calculo de la media horizontal y vertical. A partir de cada media se busca una codificaci\'on de color que permite determinar el inicio de im\'agen de la muestra. Por ejemplo, suponga que se tiene escala de colores del 0 al 10 dentro de la media vertical, sabiendo que el inicio de la lista ser\'a el margen superior de la im\'agen. bajo el criterio que a partir de una codifcaci\'on de 5 o m\'as se puede determinar que la im\'agen real de la muestra ha iniciado. Entonces teniendo la siguiente media: 000001112222222233344555... es posible determinar que aproximadamente despu\'es de los primeros 20 puntos de la im\'agen, inicia la muestra real. Por lo tanto los primeros 20 puntos estar\'ian sobrando y se dir\'ia que a partir del punto 20 se estima un punto de corte. De forma an\'aloga se tratan el resto de los puntos de corte, el vertical inferior y los horizontales.
 
-\subsection{B\'usqueda de muestras}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/1-blur}
+	\centering
+	\vspace{-0.4cm}
+	\caption{Im\'agen fuente con efecto blur aplicado.}
+	\label{fig:font-blur}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	  \vspace{-0.2cm}
+	  \centering
+	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/2-gray}
+	  \centering
+	  \vspace{-0.4cm}
+	  \caption{Im\'agen blur con efecto escala de grises aplicado.}
+	  \label{fig:font-gray}
+	  \vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	  \vspace{-0.2cm}
+	  \centering
+	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/3-invert}
+	  \centering
+	  \vspace{-0.4cm}
+	  \caption{Im\'agen blur-gray con efecto colores invertidos aplicado.}
+	  \label{fig:font-invert}
+	  \vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	  \vspace{-0.2cm}
+	  \centering
+	  \fbox{\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/4-threshold}}
+	  \centering
+	  \vspace{-0.4cm}
+	  \caption{Im\'agen blur-gray-invert con efecto threshold aplicado.}
+	  \label{fig:font-thresh}
+	  \vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	  \vspace{-0.2cm}
+	  \centering
+	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-x}
+	  \centering
+	  \vspace{-0.4cm}
+	  \caption{Plot de media sobre im\'agen con efectos en eje X.}
+	  \label{fig:font-sc-plot-x}
+	  \vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	  \vspace{-0.2cm}
+	  \centering
+	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-x-no-blur}
+	  \centering
+	  \vspace{-0.4cm}
+	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
+	  \label{fig:font-sc-plot-x-s-blur}
+	  \vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	  \vspace{-0.2cm}
+	  \centering
+	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-y}
+	  \centering
+	  \vspace{-0.4cm}
+	  \caption{Plot de media sobre im\'agen con efectos en eje Y.}
+	  \label{fig:font-sc-plot-y}
+	  \vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	  \vspace{-0.2cm}
+	  \centering
+	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-y-no-blur}
+	  \centering
+	  \vspace{-0.4cm}
+	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje Y.}
+	  \label{fig:font-sc-plot-y-s-blur}
+	  \vspace{-0.15cm}
+\end{figure}
+Puntos de corte encontrados:\\
+top: (73, 135) \\
+bottom: (1216, 1261) \\
+
+\subsubsection{B\'usqueda de muestras}
 Como proceso previo se aplican los efectos de im\'agen en el siguiente orden: blur gaussiano, escala de grises, inversi\'on de colores y treshold. Se codifica la im\'agen desde una perspectiva vertical en ceros y unos para determinar las zonas con color, esto permite delimitar las zonas verticales donde existen muestras. A continuaci\'on se mostrar\'a el ejemplo de una codificaci\'on y una interpretaci\'on de la misma.
 \newpage
 \begin{center}
@@ -62,115 +186,23 @@ Como proceso previo se aplican los efectos de im\'agen en el siguiente orden: bl
 Debajo de la l\'inea de puntos se aprecia el resultado de la codificaci\'on. Entonces podr\'ian determinarse cuatro \'areas de muestra seg\'un el ejemplo, generadas por las subsecuencias de unos en el resultado. De este modo se toman los \'indices correspondientes con los que se determinan las \'areas sobre la im\'agen real. 
 
 
-\subsection{B\'usqueda de picos}
+\subsubsection{B\'usqueda de picos}
 Como proceso previo se aplican los efectos de im\'agen en el siguiente orden: blur gaussiano, escala de grises e inversi\'on de colores. Luego de aplicar los filtros, se realiza el siguiente proceso en cada muestra: se realiza el c\'omputo de la media desde una perspectiva horizontal y con esta lista de valores que representa  a la parte m\'as larga de la im\'agen que se considera la muestra se buscar\'an los picos. Dichos picos tendr\'an un alto m\'inimo para considerarse como tal. En un principio se realiza la b\'usqueda de un pico considerando el m\'aximo de la lista que no se ha analizado. En base a este m\'aximo se hace una b\'usqueda por izquierda y por derecha de un punto de inflexi\'on, es decir, si se busca por izquierda del m\'aximo, los valores decrecen con cierto \'angulo de decrecimiento pero llegar\'a el momento en que este \'angulo se invierta o bien cobre estabilidad en sus valores (esto se analiza en base al gradiente obtenido entre los puntos), se puede decir que all\'i hay un punto de inflexi\'on. Luego se realiza el mismo proceso hacia el lado derecho del m\'aximo, se guardan los valores de puntos de inflexi\'on y el \'area que se encuentra entre dichos puntos (que contienen al m\'aximo del pico) se considera como \'area en la que se realizar\'an los c\'alculos futuros del an\'alisis, \'areas de integraci\'on. Dentro del an\'alisis de \'areas se realizan correcciones para evitar \'areas superpuestas considerando un punto medio que separe a ambas.
 Como parte de la b\'usqueda de picos se realiza adem\'as un c\'alculo extra en el que se determina la l\'inea base de cada \'area, la cual est\'a definida por la recta que se forma entre cada punto de inflexi\'on pero sin tener en cuenta aquellos puntos que corten la l\'inea de la curva.
 
-\subsection{Integraci\'on del \'area}
+\subsubsection{Integraci\'on del \'area}
 Una vez obtenidos los picos y las l\'ineas base correspondiente se procede a realizar la integraci\'on del \'area sumando el \'area que hay bajo la funci\'on de la curva pero teniendo el cuenta adem\'as el \'area que est\'a por encima de la l\'inea base.
 
-\subsection{Ejemplo del procesado de im\'agenes y resultados parciales}
+\subsubsection{Ejemplo del procesado de im\'agenes y resultados parciales}
+QUITAR y DISTRIBUIR EN LAS SECCIONES SUPERIORES\\
 A continuaci\'on se presentar\'a un ejemplo en el que se podr\'a ver la im\'agen fuente del experimento y el proceso que recibe antes de llegar al resultado final.
 \begin{itemize}
 	\renewcommand{\labelitemi}{$\bullet$}
 	\renewcommand{\labelitemii}{$\circ$}
 	
-	\item \textit{Im\'agen fuente}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/fuente}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen fuente.}
-	  \label{fig:image-font}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\newpage
+
 	\item \textit{B\'usqueda de puntos de corte}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/1-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen fuente con efecto blur aplicado.}
-	  \label{fig:font-blur}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/2-gray}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen blur con efecto escala de grises aplicado.}
-	  \label{fig:font-gray}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/3-invert}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen blur-gray con efecto colores invertidos aplicado.}
-	  \label{fig:font-invert}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \fbox{\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/4-threshold}}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen blur-gray-invert con efecto threshold aplicado.}
-	  \label{fig:font-thresh}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-x}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos en eje X.}
-	  \label{fig:font-sc-plot-x}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-x-no-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
-	  \label{fig:font-sc-plot-x-s-blur}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-y}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos en eje Y.}
-	  \label{fig:font-sc-plot-y}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-y-no-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje Y.}
-	  \label{fig:font-sc-plot-y-s-blur}
-	  \vspace{-0.15cm}
-	\end{figure}
-	Puntos de corte encontrados:\\
-	top: (73, 135) \\
-	bottom: (1216, 1261) \\
+	
 	\newpage
 	\item \textit{B\'usqueda de muestras}
 	\begin{figure}[H]
