@@ -49,7 +49,7 @@ A continuaci\'on se explicaran brevemente los detalles de cada funcionalidad y l
 \end{itemize}
 
 \subsection{Almacenar Proyectos}
-TODO
+Una de las funcionalidades que brinda el sistema, es la posibilidad de guardar el trabajo realizado dentro del proyecto en un formato que luego podr\'a ser cargado nuevamente para seguir trabajando en \'el. El proyecto se guarda en un archivo con formato \textit{ZIP} utilizando una extensi\'on propia \textit{.jtlc}, dentro del mismo se encuentra una carpeta con todas las im\'agenes del proyecto, la media calculada para cada muestra en un formato de texto plano (solo en el caso de haber llegado hasta esa etapa del proceso antes de generar el archivo) y un archivo \textit{XML} conteniendo todos los datos del proyecto ingresados por el usuario, junto a los datos calculados por el sistema y las referencias a las ima\'genes generadas y almacenadas dentro del mismo comprimido.
 
 \subsection{Exploraci\'on de proyectos}
 El software permite la exploraci\'on de proyectos dentro del directorio configurado para buscar proyectos previamente guardados. Una vez seleccionada la opci\'on se muestra una galer\'ia de im\'agenes con informaci\'on debajo de cada una que corresponde a nombre y descripci\'on del proyecto guardado, mientras que la im\'agen es la misma que subi\'o originalmente el usuario para analizar.
@@ -71,109 +71,118 @@ A fines de facilitar la compresi\'on del proceso se aclarar\'an ciertos procesos
 	\item \textit{C\'alculo de la media:} la im\'agen queda codificada en colores y se calcula un promedio de valores en base a si se necesita por orientaci\'on horizontal o vertical.
 \end{itemize}
 
+\vspace{0.5cm}
 Los siguientes ejemplos de b\'usquedas fueron sido realizados \'utilizando la siguiente imagen (fig. \ref{fig:image-font}):
 
 \begin{figure}[H]
-	\vspace{-0.2cm}
+	\vspace{-0.3cm}
 	\centering
-	\includegraphics[width=230px]{imagenes-jtlc/experimento/fuente}
+	\includegraphics[width=220px]{imagenes-jtlc/experimento/fuente}
 	\centering
 	\vspace{-0.4cm}
 	\caption{Im\'agen fuente.}
 	\label{fig:image-font}
-	\vspace{-0.15cm}
+	\vspace{-0.25cm}
 \end{figure}
+\newpage
 
 \subsubsection{B\'usqueda de puntos de corte}
 Como proceso previo se aplican los efectos de im\'agen en el siguiente orden: blur gaussiano, escala de grises, inversi\'on de colores y treshold. Se realiza un calculo de la media horizontal y vertical. A partir de cada media se busca una codificaci\'on de color que permite determinar el inicio de im\'agen de la muestra. Por ejemplo, suponga que se tiene escala de colores del 0 al 10 dentro de la media vertical, sabiendo que el inicio de la lista ser\'a el margen superior de la im\'agen. bajo el criterio que a partir de una codifcaci\'on de 5 o m\'as se puede determinar que la im\'agen real de la muestra ha iniciado. Entonces teniendo la siguiente media: 000001112222222233344555... es posible determinar que aproximadamente despu\'es de los primeros 20 puntos de la im\'agen, inicia la muestra real. Por lo tanto los primeros 20 puntos estar\'ian sobrando y se dir\'ia que a partir del punto 20 se estima un punto de corte. De forma an\'aloga se tratan el resto de los puntos de corte, el vertical inferior y los horizontales.
+
+\begin{itemize}
+	\item Procesado de la im\'agen fuente:
+\end{itemize}
 
 \begin{figure}[H]
 	\vspace{-0.2cm}
 	\centering
 	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/1-blur}
 	\centering
-	\vspace{-0.4cm}
 	\caption{Im\'agen fuente con efecto blur aplicado.}
 	\label{fig:font-blur}
 	\vspace{-0.15cm}
 \end{figure}
 \begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/2-gray}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen blur con efecto escala de grises aplicado.}
-	  \label{fig:font-gray}
-	  \vspace{-0.15cm}
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/2-gray}
+	\centering
+	\caption{Im\'agen blur con efecto escala de grises aplicado.}
+	\label{fig:font-gray}
+	\vspace{-0.15cm}
 \end{figure}
 \begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/3-invert}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen blur-gray con efecto colores invertidos aplicado.}
-	  \label{fig:font-invert}
-	  \vspace{-0.15cm}
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/3-invert}
+	\centering
+	\caption{Im\'agen blur-gray con efecto colores invertidos aplicado.}
+	\label{fig:font-invert}
+	\vspace{-0.15cm}
 \end{figure}
 \begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \fbox{\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/4-threshold}}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen blur-gray-invert con efecto threshold aplicado.}
-	  \label{fig:font-thresh}
-	  \vspace{-0.15cm}
+	\vspace{-0.2cm}
+	\centering
+	\fbox{\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/4-threshold}}
+	\centering
+	\caption{Im\'agen blur-gray-invert con efecto threshold aplicado.}
+	\label{fig:font-thresh}
+	\vspace{-0.15cm}
 \end{figure}
-\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-x}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos en eje X.}
-	  \label{fig:font-sc-plot-x}
-	  \vspace{-0.15cm}
-\end{figure}
-\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-x-no-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
-	  \label{fig:font-sc-plot-x-s-blur}
-	  \vspace{-0.15cm}
-\end{figure}
-\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-y}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos en eje Y.}
-	  \label{fig:font-sc-plot-y}
-	  \vspace{-0.15cm}
-\end{figure}
-\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-y-no-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje Y.}
-	  \label{fig:font-sc-plot-y-s-blur}
-	  \vspace{-0.15cm}
-\end{figure}
-Puntos de corte encontrados:\\
-top: (73, 135) \\
-bottom: (1216, 1261) \\
 
+\newpage
+\begin{itemize}
+	\item C\'alculo de medias y b\'usqueda de puntos:
+\end{itemize}
+
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-x}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos en eje X.}
+	\label{fig:font-sc-plot-x}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-x-no-blur}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
+	\label{fig:font-sc-plot-x-s-blur}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-y}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos en eje Y.}
+	\label{fig:font-sc-plot-y}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-cut-points/plot-y-no-blur}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos (sin blur) en eje Y.}
+	\label{fig:font-sc-plot-y-s-blur}
+	\vspace{-0.15cm}
+\end{figure}
+
+Puntos de corte encontrados:
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item top: (73, 135)
+	\item bottom: (1216, 1261)
+\end{itemize}
+
+\newpage
 \subsubsection{B\'usqueda de muestras}
 Como proceso previo se aplican los efectos de im\'agen en el siguiente orden: blur gaussiano, escala de grises, inversi\'on de colores y treshold. Se codifica la im\'agen desde una perspectiva vertical en ceros y unos para determinar las zonas con color, esto permite delimitar las zonas verticales donde existen muestras. A continuaci\'on se mostrar\'a el ejemplo de una codificaci\'on y una interpretaci\'on de la misma.
-\newpage
+
 \begin{center}
 - - - - - - - - - -\\
 0 0 0 1 0 0 0 0 1 0\\
@@ -185,87 +194,85 @@ Como proceso previo se aplican los efectos de im\'agen en el siguiente orden: bl
 
 Debajo de la l\'inea de puntos se aprecia el resultado de la codificaci\'on. Entonces podr\'ian determinarse cuatro \'areas de muestra seg\'un el ejemplo, generadas por las subsecuencias de unos en el resultado. De este modo se toman los \'indices correspondientes con los que se determinan las \'areas sobre la im\'agen real. 
 
+\newpage
+\begin{itemize}
+	\item Procesado de la im\'agen recortada:
+\end{itemize}
+
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-samples/1-blur}
+	\centering
+	\caption{Im\'agen fuente (recortada) con efecto blur aplicado.}
+	\label{fig:font-c-blur}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-samples/2-gray}
+	\centering
+	\caption{Im\'agen blur con efecto escala de grises aplicado.}
+	\label{fig:font-c-gray}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-samples/3-invert}
+	\centering
+	\caption{Im\'agen blur-gray con efecto colores invertidos aplicado.}
+	\label{fig:font-c-invert}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-samples/4-threshold}
+	\centering
+	\caption{Im\'agen blur-gray-invert con efecto threshold aplicado.}
+	\label{fig:font-c-thresh}
+	\vspace{-0.15cm}
+\end{figure}
+
+\newpage
+\begin{itemize}
+	\item C\'alculo de medias y b\'usqueda de puntos:
+\end{itemize}
+
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-samples/plot-y}
+	\centering
+	\vspace{-0.4cm}
+	\caption{Plot de media sobre im\'agen con efectos en eje Y.}
+	\label{fig:font-c-plot-y}
+	\vspace{-0.15cm}
+\end{figure}
+Muestras encontradas (puntos sobre eje-x):
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (45, 150)
+	\item (226, 314)
+	\item (419, 497)
+	\item (609, 689)
+	\item (811, 901)
+	\item (999, 1082)
+\end{itemize}
+
 
 \subsubsection{B\'usqueda de picos}
 Como proceso previo se aplican los efectos de im\'agen en el siguiente orden: blur gaussiano, escala de grises e inversi\'on de colores. Luego de aplicar los filtros, se realiza el siguiente proceso en cada muestra: se realiza el c\'omputo de la media desde una perspectiva horizontal y con esta lista de valores que representa  a la parte m\'as larga de la im\'agen que se considera la muestra se buscar\'an los picos. Dichos picos tendr\'an un alto m\'inimo para considerarse como tal. En un principio se realiza la b\'usqueda de un pico considerando el m\'aximo de la lista que no se ha analizado. En base a este m\'aximo se hace una b\'usqueda por izquierda y por derecha de un punto de inflexi\'on, es decir, si se busca por izquierda del m\'aximo, los valores decrecen con cierto \'angulo de decrecimiento pero llegar\'a el momento en que este \'angulo se invierta o bien cobre estabilidad en sus valores (esto se analiza en base al gradiente obtenido entre los puntos), se puede decir que all\'i hay un punto de inflexi\'on. Luego se realiza el mismo proceso hacia el lado derecho del m\'aximo, se guardan los valores de puntos de inflexi\'on y el \'area que se encuentra entre dichos puntos (que contienen al m\'aximo del pico) se considera como \'area en la que se realizar\'an los c\'alculos futuros del an\'alisis, \'areas de integraci\'on. Dentro del an\'alisis de \'areas se realizan correcciones para evitar \'areas superpuestas considerando un punto medio que separe a ambas.
 Como parte de la b\'usqueda de picos se realiza adem\'as un c\'alculo extra en el que se determina la l\'inea base de cada \'area, la cual est\'a definida por la recta que se forma entre cada punto de inflexi\'on pero sin tener en cuenta aquellos puntos que corten la l\'inea de la curva.
 
-\subsubsection{Integraci\'on del \'area}
-Una vez obtenidos los picos y las l\'ineas base correspondiente se procede a realizar la integraci\'on del \'area sumando el \'area que hay bajo la funci\'on de la curva pero teniendo el cuenta adem\'as el \'area que est\'a por encima de la l\'inea base.
-
-\subsubsection{Ejemplo del procesado de im\'agenes y resultados parciales}
-QUITAR y DISTRIBUIR EN LAS SECCIONES SUPERIORES\\
-A continuaci\'on se presentar\'a un ejemplo en el que se podr\'a ver la im\'agen fuente del experimento y el proceso que recibe antes de llegar al resultado final.
 \begin{itemize}
-	\renewcommand{\labelitemi}{$\bullet$}
-	\renewcommand{\labelitemii}{$\circ$}
-	
+	\item B\'usqueda de picos (muestra 1)
+\end{itemize}
+\vspace{-0.5cm}
 
-	\item \textit{B\'usqueda de puntos de corte}
-	
-	\newpage
-	\item \textit{B\'usqueda de muestras}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-samples/1-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen fuente con efecto blur aplicado.}
-	  \label{fig:font-c-blur}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-samples/2-gray}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen blur con efecto escala de grises aplicado.}
-	  \label{fig:font-c-gray}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-samples/3-invert}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen blur-gray con efecto colores invertidos aplicado.}
-	  \label{fig:font-c-invert}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-samples/4-threshold}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Im\'agen blur-gray-invert con efecto threshold aplicado.}
-	  \label{fig:font-c-thresh}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-samples/plot-y}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos en eje Y.}
-	  \label{fig:font-c-plot-y}
-	  \vspace{-0.15cm}
-	\end{figure}
-	Muestras encontradas (puntos sobre eje-x):\\
-	(45, 150)\\
-	(226, 314)\\
-	(419, 497)\\
-	(609, 689)\\
-	(811, 901)\\
-	(999, 1082)\\
-	
-	\newpage
-	\item \textit{B\'usqueda de picos (muestra 1)}
-	\begin{figure}[H]
+\begin{figure}[H]
 	\centering
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/1/1-blur}}   
 	\hspace{30px}
@@ -274,18 +281,17 @@ A continuaci\'on se presentar\'a un ejemplo en el que se podr\'a ver la im\'agen
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/1/3-invert}}
 	\caption{Aplicaci\'on de filtros sobre im\'agen de la muestra}
 	\centering
-	\end{figure}
-	\begin{figure}[H]
+\end{figure}
+\begin{figure}[H]
 	  \vspace{-0.2cm}
 	  \centering
 	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/1/plot-x}
 	  \centering
-	  \vspace{-0.4cm}
 	  \caption{Plot de media sobre im\'agen con efectos en eje X.}
 	  \label{fig:sp-1-plot-x}
 	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
+\end{figure}
+\begin{figure}[H]
 	  \vspace{-0.2cm}
 	  \centering
 	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/1/plot-x-no-blur}
@@ -294,18 +300,29 @@ A continuaci\'on se presentar\'a un ejemplo en el que se podr\'a ver la im\'agen
 	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
 	  \label{fig:sp-1-plot-x-no-blur}
 	  \vspace{-0.15cm}
-	\end{figure}
-	Picos encontrados:\\
-	(0.42933333, 0.53333336)\\
-	(0.73422223, 0.8702222)\\ \\
-	Picos encontrados (sin blur):\\
-	(0.43733335, 0.47111112)\\
-	(0.47111112, 0.52177775)\\
-	(0.72, 0.86755556)\\
+\end{figure}
+Picos encontrados:
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.42933333, 0.53333336)
+	\item (0.73422223, 0.8702222)
+\end{itemize}
+
+Picos encontrados (sin blur):
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.43733335, 0.47111112)
+	\item (0.47111112, 0.52177775)
+	\item (0.72, 0.86755556)
+\end{itemize}
 	
-	\newpage
-	\item \textit{B\'usqueda de picos (muestra 2)}
-	\begin{figure}[H]
+\newpage
+\begin{itemize}
+	\item B\'usqueda de picos (muestra 2)
+\end{itemize}
+\vspace{-0.5cm}
+
+\begin{figure}[H]
 	\centering
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/2/1-blur}}   
 	\hspace{30px}
@@ -314,37 +331,49 @@ A continuaci\'on se presentar\'a un ejemplo en el que se podr\'a ver la im\'agen
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/2/3-invert}}
 	\caption{Aplicaci\'on de filtros sobre im\'agen de la muestra}
 	\centering
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/2/plot-x}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos en eje X.}
-	  \label{fig:sp-2-plot-x}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/2/plot-x-no-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
-	  \label{fig:sp-2-plot-x-no-blur}
-	  \vspace{-0.15cm}
-	\end{figure}
-	Picos encontrados: \\
-	(0.4231111, 0.5742222)\\
-	(0.7911111, 0.97422224)\\ \\
-	Picos encontrados (sin blur):\\
-	(0.46222222, 0.5004445)\\
-	(0.5004445, 0.55644447)\\
-	(0.77511114, 0.8977778)\\
-	
-	\item \textit{B\'usqueda de picos (muestra 3)}
-	\begin{figure}[H]
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/2/plot-x}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos en eje X.}
+	\label{fig:sp-2-plot-x}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/2/plot-x-no-blur}
+	\centering
+	\vspace{-0.4cm}
+	\caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
+	\label{fig:sp-2-plot-x-no-blur}
+	\vspace{-0.15cm}
+\end{figure}
+
+Picos encontrados:
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.4231111, 0.5742222)
+	\item (0.7911111, 0.97422224)
+\end{itemize}
+
+Picos encontrados (sin blur):
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.46222222, 0.5004445)
+	\item (0.5004445, 0.55644447)
+	\item (0.77511114, 0.8977778)
+\end{itemize}
+
+\newpage
+\begin{itemize}
+	\item B\'usqueda de picos (muestra 3)
+\end{itemize}
+\vspace{-0.5cm}
+
+\begin{figure}[H]
 	\centering
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/3/1-blur}}   
 	\hspace{30px}
@@ -353,36 +382,47 @@ A continuaci\'on se presentar\'a un ejemplo en el que se podr\'a ver la im\'agen
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/3/3-invert}}
 	\caption{Aplicaci\'on de filtros sobre im\'agen de la muestra}
 	\centering
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/3/plot-x}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos en eje X.}
-	  \label{fig:sp-3-plot-x}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/3/plot-x-no-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
-	  \label{fig:sp-3-plot-x-no-blur}
-	  \vspace{-0.15cm}
-	\end{figure}
-	Picos encontrados:\\
-	(0.4328889, 0.57688886)\\
-	(0.7351111, 0.9208889)\\ \\
-	Picos encontrados (sin blur): \\
-	(0.7457778, 0.8008889)\\
+\end{figure}
+\begin{figure}[H]
+	 \vspace{-0.2cm}
+	 \centering
+	 \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/3/plot-x}
+	 \centering
+	 \caption{Plot de media sobre im\'agen con efectos en eje X.}
+	 \label{fig:sp-3-plot-x}
+	 \vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/3/plot-x-no-blur}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
+	\label{fig:sp-3-plot-x-no-blur}
+	\vspace{-0.15cm}
+\end{figure}
+
+Picos encontrados:
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.4328889, 0.57688886)
+	\item (0.7351111, 0.9208889)
+\end{itemize}
+
+Picos encontrados (sin blur):
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.7457778, 0.8008889)
+\end{itemize}
+
 	
-	\newpage
-	\item \textit{B\'usqueda de picos (muestra 4)}
-	\begin{figure}[H]
+\newpage
+\begin{itemize}
+	\item B\'usqueda de picos (muestra 4)
+\end{itemize}
+\vspace{-0.5cm}
+
+\begin{figure}[H]
 	\centering
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/4/1-blur}}   
 	\hspace{30px}
@@ -391,37 +431,47 @@ A continuaci\'on se presentar\'a un ejemplo en el que se podr\'a ver la im\'agen
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/4/3-invert}}
 	\caption{Aplicaci\'on de filtros sobre im\'agen de la muestra}
 	\centering
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/4/plot-x}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos en eje X.}
-	  \label{fig:sp-4-plot-x-no-blur---repetido}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/4/plot-x-no-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
-	  \label{fig:sp-4-plot-x-no-blur}
-	  \vspace{-0.15cm}
-	\end{figure}
-	Picos encontrados: \\
-	(0.424, 0.5786667)\\ 
-	(0.7493333, 0.8791111) \\ \\
-	Picos encontrados (sin blur): \\
-	(0.408, 0.576)\\
-	(0.74755555, 0.88622224)\\
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/4/plot-x}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos en eje X.}
+	\label{fig:sp-4-plot-x-no-blur---repetido}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/4/plot-x-no-blur}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
+	\label{fig:sp-4-plot-x-no-blur}
+	\vspace{-0.15cm}
+\end{figure}
+
+Picos encontrados:
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.424, 0.5786667)
+	\item (0.7493333, 0.8791111)
+\end{itemize}
+
+Picos encontrados (sin blur):
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.408, 0.576)
+	\item (0.74755555, 0.88622224)
+\end{itemize}
 	
-	\newpage
-	\item \textit{B\'usqueda de picos (muestra 5)}
-	\begin{figure}[H]
+\newpage
+\begin{itemize}
+	\item B\'usqueda de picos (muestra 5)
+\end{itemize}
+\vspace{-0.5cm}
+
+\begin{figure}[H]
 	\centering
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/5/1-blur}}   
 	\hspace{30px}
@@ -430,36 +480,46 @@ A continuaci\'on se presentar\'a un ejemplo en el que se podr\'a ver la im\'agen
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/5/3-invert}}
 	\caption{Aplicaci\'on de filtros sobre im\'agen de la muestra}
 	\centering
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/5/plot-x}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos en eje X.}
-	  \label{fig:sp-5-plot-x-no-blur--repetido}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/5/plot-x-no-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
-	  \label{fig:sp-5-plot-x-no-blur}
-	  \vspace{-0.15cm}
-	\end{figure}
-	Picos encontrados: \\
-	(0.4471111, 0.5982222)\\
-	(0.7831111, 0.9342222)\\ \\
-	Picos encontrados (sin blur):\\
-	(0.7857778, 0.8968889)\\
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/5/plot-x}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos en eje X.}
+	\label{fig:sp-5-plot-x-no-blur--repetido}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/5/plot-x-no-blur}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
+	\label{fig:sp-5-plot-x-no-blur}
+	\vspace{-0.15cm}
+\end{figure}
+
+Picos encontrados:
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.4471111, 0.5982222)
+	\item (0.7831111, 0.9342222)
+\end{itemize}
+
+Picos encontrados (sin blur):
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.7857778, 0.8968889)
+\end{itemize}
 	
-	\newpage
-	\item \textit{B\'usqueda de picos (muestra 6)}
-	\begin{figure}[H]
+\newpage
+\begin{itemize}
+	\item B\'usqueda de picos (muestra 6)
+\end{itemize}
+\vspace{-0.5cm}
+
+\begin{figure}[H]
 	\centering
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/6/1-blur}}   
 	\hspace{30px}
@@ -468,30 +528,66 @@ A continuaci\'on se presentar\'a un ejemplo en el que se podr\'a ver la im\'agen
 	\fbox{\includegraphics[width=40px]{imagenes-jtlc/experimento/search-peaks/6/3-invert}}
 	\caption{Aplicaci\'on de filtros sobre im\'agen de la muestra}
 	\centering
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/6/plot-x}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos en eje X.}
-	  \label{fig:sp-6-plot-x-no-blur--repetido}
-	  \vspace{-0.15cm}
-	\end{figure}
-	\begin{figure}[H]
-	  \vspace{-0.2cm}
-	  \centering
-	  \includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/6/plot-x-no-blur}
-	  \centering
-	  \vspace{-0.4cm}
-	  \caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
-	  \label{fig:sp-6-plot-x-no-blur}
-	  \vspace{-0.15cm}
-	\end{figure}
-	Picos encontrados: \\
-	(0.7271111, 0.8622222)\\ \\
-	Picos encontrados (sin blur): \\
-	(0.72977775, 0.8613333) \\
-	
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/6/plot-x}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos en eje X.}
+	\label{fig:sp-6-plot-x-no-blur--repetido}
+	\vspace{-0.15cm}
+\end{figure}
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/search-peaks/6/plot-x-no-blur}
+	\centering
+	\caption{Plot de media sobre im\'agen con efectos (sin blur) en eje X.}
+	\label{fig:sp-6-plot-x-no-blur}
+	\vspace{-0.15cm}
+\end{figure}
+
+Picos encontrados:
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.7271111, 0.8622222)
 \end{itemize}
+
+Picos encontrados (sin blur):
+\begin{itemize}
+	\addtolength{\itemindent}{1cm}
+	\item (0.72977775, 0.8613333)
+\end{itemize}
+
+\subsubsection{L\'inea base}
+La linea de base de cada pico se calcula a partir de los l\'imites m\'as externos del mismo, se calcula las rectas que pasan entre el punto inicial y el punto final del pico sin cortarlo. En la figura (fig. \ref{fig:base-line}) se muestra un ejemplo de linea de base exagerando el tama\~no del pico.
+
+\begin{figure}[H]
+	\vspace{-0.2cm}
+	\centering
+	\includegraphics[width=230px]{imagenes-jtlc/experimento/baseline}
+	\centering
+	\caption{Ejemplo de l\'inea base sin cortar la curva.}
+	\label{fig:base-line}
+	\vspace{-0.15cm}
+\end{figure}
+
+\subsubsection{Integraci\'on del \'area}
+Una vez obtenidos los picos y las l\'ineas base correspondiente se procede a realizar la integraci\'on del \'area sumando el \'area que hay bajo la funci\'on de la curva pero teniendo el cuenta adem\'as el \'area que est\'a por encima de la l\'inea base.
+
+\begin{table}[H]
+\centering
+\caption{Resultados de integraci\'on del \'area}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|}
+\hline
+          & Pico 1              & Pico 2              & Total    \\ \hline
+Muestra 1 & 1903.4 (34.1\%)     & 3678.484 (65.9\%)   & 5581.844 \\ \hline
+Muestra 2 & 2722.152 (48.048\%) & 2943.317 (51.952\%) & 5665.47  \\ \hline
+Muestra 3 & 3601.735 (43.146\%) & 4745.983 (56.854\%) & 8347.715 \\ \hline
+Muestra 4 & 3821.825 (52.932\%) & 3398.422 (47.068\%) & 7220.247 \\ \hline
+Muestra 5 & 3579.826 (50.651\%) & 3487.793 (49.349\%) & 7067.619 \\ \hline
+Muestra 6 & 2920.364 (100\%)    & -                   & 2920.364 \\ \hline
+\end{tabular}
+\end{table}
